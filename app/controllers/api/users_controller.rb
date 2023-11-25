@@ -6,7 +6,7 @@ class Api::UsersController < ApplicationController
   end
 
   def get_user_role
-    render json: {email: @user.email, role: @user.role}
+    render json: { email: @user.email, role: @user.role }
   end
 
   def create
@@ -23,6 +23,13 @@ class Api::UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
+      puts @user.role
+
+      if @user.role == "consumer"
+        create_consumer(@user.email) unless consumer_exists?(@user.email)
+      elsif @user.role == "attendant"
+        create_attendant(@user.email) unless attendant_exists?(@user.email)
+      end
       render json: @user
     else
       render json: @user.errors, status: :unprocessable_entity
@@ -47,5 +54,21 @@ class Api::UsersController < ApplicationController
 
   def render_not_found
     render json: { error: 'User not found' }, status: :not_found
+  end
+
+  def consumer_exists?(email)
+    Consumer.exists?(email: email)
+  end
+
+  def create_consumer(email)
+    Consumer.create(email: email)
+  end
+
+  def attendant_exists?(email)
+    Attendant.exists?(email: email)
+  end
+
+  def create_attendant(email)
+    !Attendant.create(email: email)
   end
 end
