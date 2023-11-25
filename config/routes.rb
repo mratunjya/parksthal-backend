@@ -18,5 +18,10 @@ Rails.application.routes.draw do
       post 'is_any_missing_details', on: :collection
       post 'attendant_details', on: :collection
     end
+
+    resources :owners, only: [:create, :show, :update, :destroy] do
+      post 'is_any_missing_details', on: :collection
+      post 'owner_details', on: :collection
+    end
   end
 end
