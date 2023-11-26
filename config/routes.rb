@@ -23,5 +23,11 @@ Rails.application.routes.draw do
       post 'is_any_missing_details', on: :collection
       post 'owner_details', on: :collection
     end
+
+    resources :parking_lots, only: [:create, :show] do
+        post 'index_by_email', on: :collection
+        post 'delete', on: :collection
+        post 'update_parking_lot', on: :collection
+    end
   end
 end
