@@ -10,12 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_26_175002) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_27_081430) do
   create_table "attendants", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "phone"
     t.string "parking_lot_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.string "razorpayOrderId"
+    t.string "razorpaySignature"
+    t.string "razorpayPaymentId"
+    t.string "parking_lot_id"
+    t.string "price"
+    t.string "phone"
+    t.string "email"
+    t.string "name"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

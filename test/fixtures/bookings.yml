@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  razorpayOrderId: MyString
+  razorpaySignature: MyString
+  razorpayPaymentId: MyString
+  parking_lot_id: MyString
+  price: MyString
+  phone: MyString
+  email: MyString
+  name: MyString
+  status: MyString
+
+two:
+  razorpayOrderId: MyString
+  razorpaySignature: MyString
+  razorpayPaymentId: MyString
+  parking_lot_id: MyString
+  price: MyString
+  phone: MyString
+  email: MyString
+  name: MyString
+  status: MyString

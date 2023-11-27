@@ -12,7 +12,27 @@ class Api::ParkingLotsController < ApplicationController
   end
 
   def show
-    render json: ParkingLot.all
+    user_email = params[:email]
+    booked_parking_lot_ids_today = Booking.where(email: user_email, created_at: Date.today.all_day).pluck(:parking_lot_id)
+    parking_lots = ParkingLot.all.map do |parking_lot|
+      {
+        "id": parking_lot.id,
+        "email": parking_lot.email,
+        "name": parking_lot.name,
+        "country": parking_lot.country,
+        "state": parking_lot.state,
+        "city": parking_lot.city,
+        "address": parking_lot.address,
+        "parking_lot_id": parking_lot.parking_lot_id,
+        "created_at": parking_lot.created_at,
+        "updated_at": parking_lot.updated_at,
+        "booked": parking_lot.booked,
+        "total_capacity": parking_lot.total_capacity,
+        "price": parking_lot.price,
+        "booked_today": booked_parking_lot_ids_today.include?(parking_lot.parking_lot_id.to_s)
+      }
+    end
+    render json: parking_lots
   end
 
   def update_parking_lot

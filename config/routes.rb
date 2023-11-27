@@ -36,5 +36,7 @@ Rails.application.routes.draw do
       post 'delete', on: :collection
       post 'update_parking_lot', on: :collection
     end
+
+    resources :bookings
   end
 end
