@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_27_081430) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_30_111909) do
   create_table "attendants", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -58,7 +58,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_27_081430) do
     t.integer "parking_lot_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "booked"
     t.string "total_capacity"
     t.string "price"
   end

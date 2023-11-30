@@ -24,13 +24,7 @@ class Api::BookingsController < ApplicationController
       @booking = Booking.new(booking_params)
   
       if @booking.save
-        parking_lot = ParkingLot.find_by(parking_lot_id: @booking.parking_lot_id)
-        parking_lot.booked = parking_lot.booked.to_i + 1
-        if parking_lot.save
-            render json: { success: 'Booking created successfully', booking: @booking }, status: :created
-        elsif
-            render json: { errors: parking_lot.errors.full_messages }, status: :unprocessable_entity
-        end
+        render json: { success: 'Booking created successfully', booking: @booking }, status: :created
       else
         render json: { errors: @booking.errors.full_messages }, status: :unprocessable_entity
       end
