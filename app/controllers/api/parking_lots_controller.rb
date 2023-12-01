@@ -54,7 +54,24 @@ class Api::ParkingLotsController < ApplicationController
 
   def index_by_email
     email = params[:email]
-    parking_lots = ParkingLot.where(email: email)
+    parking_lots = ParkingLot.where(email: email).all.map do |parking_lot|
+      total_bookings_today = Booking.where(parking_lot_id: parking_lot.parking_lot_id, created_at: Date.today.all_day).count
+      {
+        id: parking_lot.id,
+        email: parking_lot.email,
+        name: parking_lot.name,
+        country: parking_lot.country,
+        state: parking_lot.state,
+        city: parking_lot.city,
+        address: parking_lot.address,
+        parking_lot_id: parking_lot.parking_lot_id,
+        created_at: parking_lot.created_at,
+        updated_at: parking_lot.updated_at,
+        booked: total_bookings_today,
+        total_capacity: parking_lot.total_capacity,
+        price: parking_lot.price,
+      }
+    end
     render json: parking_lots
   end
 
