@@ -6,14 +6,17 @@ class Api::BookingsController < ApplicationController
         user_email = params[:email]
         bookings = Booking.where(email: user_email).map do |booking|
           parking_lot = ParkingLot.find_by(parking_lot_id: booking.parking_lot_id)
-      
+
+          # Convert UTC to IST
+          created_at_ist = booking.created_at.in_time_zone('Asia/Kolkata')
+
           {
             price: booking.price, # Assuming 'price' is an attribute of Booking
             name: parking_lot&.name, # Assuming 'name' is an attribute of ParkingLot
             status: booking.status,
             address: parking_lot&.address, # Assuming 'address' is an attribute
             city: parking_lot&.city, # Assuming 'city' is an
-            created_at: booking.created_at
+            created_at: created_at_ist
           }
         end
       

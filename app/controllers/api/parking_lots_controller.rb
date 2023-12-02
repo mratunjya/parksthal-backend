@@ -14,8 +14,13 @@ class Api::ParkingLotsController < ApplicationController
   def show
     user_email = params[:email]
     booked_parking_lot_ids_today = Booking.where(email: user_email, created_at: Date.today.all_day).pluck(:parking_lot_id)
+  
     parking_lots = ParkingLot.all.map do |parking_lot|
       total_bookings_today = Booking.where(parking_lot_id: parking_lot.parking_lot_id, created_at: Date.today.all_day).count
+  
+      # Convert UTC to IST
+      created_at_ist = parking_lot.created_at.in_time_zone('Asia/Kolkata')
+  
       {
         id: parking_lot.id,
         email: parking_lot.email,
@@ -25,7 +30,7 @@ class Api::ParkingLotsController < ApplicationController
         city: parking_lot.city,
         address: parking_lot.address,
         parking_lot_id: parking_lot.parking_lot_id,
-        created_at: parking_lot.created_at,
+        created_at: created_at_ist,
         updated_at: parking_lot.updated_at,
         booked: total_bookings_today,
         total_capacity: parking_lot.total_capacity,
@@ -33,8 +38,10 @@ class Api::ParkingLotsController < ApplicationController
         booked_today: booked_parking_lot_ids_today.include?(parking_lot.parking_lot_id.to_s)
       }
     end
+  
     render json: parking_lots
   end
+  
 
   def update_parking_lot
     if @parking_lot.update(parking_lot_params)
@@ -56,6 +63,9 @@ class Api::ParkingLotsController < ApplicationController
     email = params[:email]
     parking_lots = ParkingLot.where(email: email).all.map do |parking_lot|
       total_bookings_today = Booking.where(parking_lot_id: parking_lot.parking_lot_id, created_at: Date.today.all_day).count
+
+      # Convert UTC to IST
+      created_at_ist = parking_lot.created_at.in_time_zone('Asia/Kolkata')
       {
         id: parking_lot.id,
         email: parking_lot.email,
@@ -65,7 +75,7 @@ class Api::ParkingLotsController < ApplicationController
         city: parking_lot.city,
         address: parking_lot.address,
         parking_lot_id: parking_lot.parking_lot_id,
-        created_at: parking_lot.created_at,
+        created_at: created_at_ist,
         updated_at: parking_lot.updated_at,
         booked: total_bookings_today,
         total_capacity: parking_lot.total_capacity,
